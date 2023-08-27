@@ -1,3 +1,19 @@
+<?php
+
+include_once 'procesos/Conexion.php';
+    session_start();
+
+   
+    
+?>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+<!-- Alertas -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <!-- Favicon -->
 <link href="img/favicon.ico" rel="icon">
 
@@ -33,28 +49,17 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <div class="navbar-nav ms-auto py-0">
-            <a href="index.php" class="nav-item nav-link">Inicio</a>
-            <a href="about.php" class="nav-item nav-link">Estatus</a>
+            <a href="nosotros.php" class="nav-item nav-link">Nosotros</a>
             <!-- <a href="service.html" class="nav-item nav-link">Service</a> -->
             
             
+            <?php if(!empty($_SESSION['usuario'])){ ?>
+                <a href="vista.php" class="nav-item nav-link"><img src="img/aprobado.png" width="30" height="30" alt="CV"></a>
+                <li><a href="procesos/logout.php" class="nav-item nav-link me-3">Cerrar Sesion</a></li>
+            <?php } else { ?>
+                <li><a href="index.php" class="nav-item nav-link me-3">Iniciar Sesion</a></li>
+            <?php }?>
             
-            <!-- <?php if(isset($_SESSION)){?> -->
-                <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="img/usuario.png" alt="" style="width:30px; height:30px;" >
-                    Usuario
-                </a>
-                <a href="dispositivos.php" class="nav-item nav-link ">Dispositivos</a>
-             <!-- <?php }else{ ?> -->
-           
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="procesos/logout.php">Salir</a></li>
-                </ul>
-                </li>
-                <!-- <?php } ?> -->
-            
-            <a href="login.php" class="nav-item nav-link me-3">Iniciar sesion</a>
         </div>
     </div>
 </nav>

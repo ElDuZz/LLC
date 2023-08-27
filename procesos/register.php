@@ -1,48 +1,67 @@
-<?php session_start();
-include '../clases/conexion.php';
-include '../clases/users.php';
 
-function test_input($data) {
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
-}
+<?php
+session_start();
+$conexion=mysqli_connect("localhost","root","","files");
+$usuario=$_POST['usuario'];
+$contraseña=$_POST['contraseña'];
+$contraseña2=$_POST['contraseña-confirm'];
 
-$username = test_input($_POST ['username']);
-$email = test_input($_POST ['mail']);
-$password = test_input($_POST ['password']);
-$password2 = test_input($_POST ['password-confirm']);
+if((!empty($contraseña)) || (!empty($contraseña)) || (!empty($usuario))){
+    if($contraseña == $contraseña2){
+        $validar=mysqli_query($conexion,"SELECT * FROM usuarios WHERE usuario='$usuario'");
+        if (mysqli_num_rows($validar)>  0) {
+            
+            echo '
+            <script>
+            window.location = "../sign.php";
+            alert("Email registrado");
+            </script>
+            ';
+            exit;
+        }else{
+            
+            $password = ($_POST['contraseña']);
+            $password = md5($password);
+            $sql = "INSERT INTO usuarios (usuario, contraseña) VALUES ('$usuario','$password')";
+            $stmt = $conexion->query($sql);
+            if($stmt > 0 ){
+                echo '
+                <script>
+                window.location = "../sign.php";
+                alert("Usuario creado");
+                </script>
+                ';
+        exit;
+            } else{
+                echo '
+                <script>
+                window.location = "../sign.php";
+                alert("Usuario no creado");
+                </script>
+                ';
+        exit;
 
-if(empty($username)){
-    header("Location: ../sign.php?error=Usuario requerido");
-}else if(empty($email)){
-    header("Location: ../sign.php?error=Email requerido");
-}else if(empty($password)){
-    header("Location: ../sign.php?error=Contraseña requerida");
-}else if($password != $password2){
-    header("Location: ../sign.php?error=Las contraseñas no coinciden");
-}else{
-    
-    $user = new Users();
-    $password = md5($password);
-    $data = array(
-        "username" => $username,
-        "mail" => $email,
-        "password" => $password,
-    );
-    $request= $user -> register($data);
-    if($request == 0){
-        header("Location: ../sign.php?error=This email has already been registered");
-    }
-    if ($request -> getInsertedId() > '0') {
-        header("Location: ../sign.php?registered=Registrado");
+            }
+        }
     }else{
-        header("Location: ../sign.php?error=A ocurrido un error");
+        
+        echo '
+          <script>
+          window.location = "../sign.php";
+          Swal.fire("contraseñas no iguales");
+          </script>
+          ';
+          exit;
     }
     
+}else{
+    echo '
+          <script>
+          window.location = "../sign.php";
+          alert("Campos Vacios");
+          </script>
+          ';
+          exit;
 }
-
-
 
 ?>

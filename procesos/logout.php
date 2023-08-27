@@ -1,10 +1,11 @@
 <?php
+  session_start();
 
-session_start();
-include '../clases/conexion.php';
-include '../clases/users.php';
+  session_unset();
 
+  session_destroy();
 
-$user = new Users();
-$data = $user -> logOut();
-header("Location: ../index.php");
+  // header('Location:../Nosotros.php');
+  
+  header('Location:../index.php');
+?>
